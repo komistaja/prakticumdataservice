@@ -22,8 +22,7 @@ app.listen(process.env.PORT || 3000, function () {
 
 app.use(express.static('public'));
 
-app.get('/zones', (req, res) => {
-  
-    res.send('benis9000');
-    console.log('page refresh');
+app.post('/zones', (req, res) => {
+  console.log(req);
+  res.send('benis9000');
 });
