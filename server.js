@@ -9,6 +9,6 @@ app.use(express.static('public'));
 
 app.get('/zones', (req, res) => {
   
-    res.send('benis');
+    res.send('benis9000');
     console.log('page refresh');
 });
