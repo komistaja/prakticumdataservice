@@ -6,6 +6,11 @@ const db = mongoose.connection;
 
 const ticketModel = require('./ticketmodel');
 
+const bodyParser = require('body-parser');
+
+app.use(bodyParser.json()); // support json encoded bodies
+app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
+
 mongoose.connect('mongodb://localhost/test');
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -22,8 +27,7 @@ app.listen(process.env.PORT || 3000, function () {
 
 app.use(express.static('public'));
 
-app.get('/zones', (req, res) => {
-  
-    res.send('benis9000');
-    console.log('page refresh');
+app.post('/zones', (req, res) => {
+  console.log(req.body);
+  res.send(req.body);
 });
