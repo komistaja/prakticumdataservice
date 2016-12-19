@@ -38,7 +38,9 @@ app.post('/add', (req, res) => {
 
 //Database search
 app.get('/search', (req, res) => {
-  db.collection('tickets').find({}).toArray(function (err, tickets) {
+  console.log('Search: ' + req.query.email);
+
+  db.collection('tickets').find({ email: req.query.email }).toArray(function (err, tickets) {
     res.send(tickets);
   });
 });
