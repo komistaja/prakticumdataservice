@@ -2,9 +2,39 @@
   display: flex;
   margin-left: auto;
   margin-right: auto;
+  border-radius: 3px;
+  border: 1px solid;
+  padding: 5px;
+  margin-top: 3px;
 }
 
 .inputlabel {
   display: block;
   text-align: center;
+}
+
+form {
+  margin-top: 10%;
+}
+
+table, th, td {
+  border: 1px solid darkgray;
+  border-collapse: collapse;
+}
+
+td, th {
+  padding: 5px;
+}
+
+tr:nth-child(odd) {
+  background-color: lightgray;
+}
+
+th  {
+  background-color: lightgray;
+}
+
+.button {
+  margin: 10px auto 10px auto;
+  display: block;
 }
