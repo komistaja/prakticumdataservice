@@ -44,3 +44,25 @@ app.get('/search', (req, res) => {
     res.send(tickets);
   });
 });
+
+//empty database
+app.get('/delete', (req, res) => {
+  db.collection('tickets').remove({});
+    res.send('DB deleted');
+    console.log('Database erased');
+});
+
+
+//Worker search
+app.get('/workersearch', (req, res) => {
+  var email = req.query.email;
+  var id = req.query.id;
+  console.log('Search: ' + email + ' ' + id);
+
+  db.collection('tickets').find({ email: req.query.email }).toArray(function (err, tickets) { var restickets = [];
+    for(i = 0; i < tickets.length; i++) {
+      restickets[i] = { _id:tickets[i]._id, email:tickets[i].email, service:tickets[i].service, comments: tickets[i].comments};
+    }
+    res.send(restickets);
+  });
+});
