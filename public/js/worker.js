@@ -10,6 +10,7 @@ $(function(){
   $('#search').click(function() {
     var email = $('#email').val();
     var id = $('#id').val();
+
     $.get('/workersearch',{ email: email, id: id }) 
       .done(function(data) {
       console.log(data);

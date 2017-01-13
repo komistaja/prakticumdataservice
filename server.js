@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const db = mongoose.connection;
 const ticketModel = require('./ticketmodel');
+const counterModel = require('./countermodel');
 const bodyParser = require('body-parser');
 
 app.use(bodyParser.json()); // support json encoded bodies
@@ -59,7 +60,7 @@ app.get('/workersearch', (req, res) => {
   var id = req.query.id;
   console.log('Search: ' + email + ' ' + id);
 
-  db.collection('tickets').find({ email: req.query.email }).toArray(function (err, tickets) { var restickets = [];
+  db.collection('tickets').find({ $or: [ { email: req.query.email }, { _id: req.query.id } ] }).toArray(function (err, tickets) { var restickets = [];
     for(i = 0; i < tickets.length; i++) {
       restickets[i] = { _id:tickets[i]._id, email:tickets[i].email, service:tickets[i].service, comments: tickets[i].comments};
     }
