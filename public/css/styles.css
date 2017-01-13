@@ -20,6 +20,7 @@ form {
 table, th, td {
   border: 1px solid darkgray;
   border-collapse: collapse;
+  margin: 20px auto 20px auto;
 }
 
 td, th {
@@ -37,4 +38,8 @@ th  {
 .button {
   margin: 10px auto 10px auto;
   display: block;
+}
+
+.tablediv {
+  margin: 20px 10% 20px 10%;
 }
