@@ -1,5 +1,18 @@
 $(function(){
   
+  //Login
+  $('#login').click(function(){
+    if($('#username').val() && $('#password').val()) {
+      var username = $('#username').val();
+      var password = $('#password').val();
+      $.post('/login', { username: username, password: password }, function(data, status) {
+        
+      });
+    } else {
+      console.log('passu vituiks');
+    }
+  });
+  
   //Add data to database
   $('#button').click(function(){
     //check if required fields are empty

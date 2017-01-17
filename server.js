@@ -4,13 +4,16 @@ const mongoose = require('mongoose');
 const db = mongoose.connection;
 const ticketModel = require('./ticketmodel');
 const counterModel = require('./countermodel');
+const users = require('./users');
 const bodyParser = require('body-parser');
+
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 //connect to database
-mongoose.connect('mongodb://prakticum:password@ds029665.mlab.com:29665/heroku_79kjs0nb');
+//mongoose.connect('mongodb://prakticum:password@ds029665.mlab.com:29665/heroku_79kjs0nb');
+mongoose.connect('mongodb://localhost/test');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log('database connected');
@@ -23,6 +26,13 @@ app.listen(process.env.PORT || 3000, function () {
 
 //Set public folder
 app.use(express.static('public'));
+
+//login
+app.post('/login', (req, res) => {
+  var data = req.body;
+  console.log('Login: ' + data.username);
+  
+});
 
 //Add data to database
 app.post('/add', (req, res) => {
