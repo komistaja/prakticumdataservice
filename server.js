@@ -6,6 +6,7 @@ const ticketModel = require('./ticketmodel');
 const counterModel = require('./countermodel');
 const users = require('./users');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 
 
 app.use(bodyParser.json()); // support json encoded bodies
