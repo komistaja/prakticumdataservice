@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require('mongoose');
 const db = mongoose.connection;
 const ticketModel = require('./ticketmodel');
+const userModel = require('./usermodel');
 const counterModel = require('./countermodel');
 const users = require('./users');
 const bodyParser = require('body-parser');
@@ -29,10 +30,60 @@ app.listen(process.env.PORT || 3000, function () {
 app.use(express.static('public'));
 
 //login
-app.post('/login', (req, res) => {
-  var data = req.body;
-  console.log('Login: ' + data.username);
+app.use(session({
+  secret: 'dontcare',
+  resave: true,
+  saveUninitialized: true
+}));
+
+
+//Auth middleware
+var auth = function(req, res, next) {
+  if(req.session && req.session.user === checkthis && req.session.admin)
+    return next();
+  else
+    return res.sendStatus(401);
+};
+
+//Login databasemiddleware
+var creds = function(usr) {
+  var benis = db.collection('users').find({ username: usr }).toArray();
+  var user = benis.then(function(done) {
+    // console.log('var user: ' + done);
+    return done;
+  }, function(err) {
+    console.error('Async error?')
+  });
   
+  console.log(user);
+  return Promise.resolve(user);
+};
+
+//Login endpoint
+app.post('/login', function(req, res) {
+  var credentials = creds(req.body.username);
+  console.log('creds; ' + credentials);
+
+  if(!req.body.username || !req.body.password) {
+    res.send('Login failed');
+    console.log('Empty credentials');
+  } else if(req.body.username === creds(req.body.username) || req.body.password === creds(req.body.password)) {
+    console.log('Login: ' + req.body.username);
+    req.session.user = 'admin';
+    req.session.admin = true;
+    res.send('login success');
+  }
+});
+
+//Logout
+app.get('/logout', function(req, res) {
+  req.session.destroy();
+  res.send('logged out');
+});
+
+//Logged content
+app.get('/content', auth, function(req, res) {
+  //add logged content end here
 });
 
 //Add data to database
@@ -71,7 +122,8 @@ app.get('/workersearch', (req, res) => {
   var id = req.query.id;
   console.log('Search: ' + email + ' ' + id);
 
-  db.collection('tickets').find({ $or: [ { email: req.query.email }, { _id: req.query.id } ] }).toArray(function (err, tickets) { var restickets = [];
+  db.collection('tickets').find({ $or: [ { email: req.query.email }, { _id: req.query.id } ] }).toArray(function (err, tickets) { 
+    var restickets = [];
     for(i = 0; i < tickets.length; i++) {
       restickets[i] = { _id:tickets[i]._id, email:tickets[i].email, service:tickets[i].service, comments: tickets[i].comments};
     }
