@@ -61,18 +61,27 @@ var creds = function(usr) {
 
 //Login endpoint
 app.post('/login', function(req, res) {
-  var credentials = creds(req.body.username);
-  console.log('creds; ' + credentials);
-
-  if(!req.body.username || !req.body.password) {
-    res.send('Login failed');
-    console.log('Empty credentials');
-  } else if(req.body.username === creds(req.body.username) || req.body.password === creds(req.body.password)) {
-    console.log('Login: ' + req.body.username);
-    req.session.user = 'admin';
-    req.session.admin = true;
-    res.send('login success');
-  }
+  function benis(usr) {
+    return db.collection('users').find({ username: usr }).toArray();
+  };
+  
+  console.log('postBenis: ' + benis('admin'));
+  /*var credentials = creds(req.body.username);
+  console.log('creds; ' + credentials);*/
+  benis(req.body.username).then(function(value) {
+    var mitah = value;
+    console.log(mitah);
+    if(!req.body.username || !req.body.password) {
+      res.send('Login failed');
+      console.log('Empty credentials');
+    } else if(req.body.username === value || req.body.password === creds(req.body.password)) {
+      console.log('Login: ' + req.body.username);
+      req.session.user = 'admin';
+      req.session.admin = true;
+      res.send('login success');
+    }
+  });
+  
 });
 
 //Logout
