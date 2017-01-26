@@ -56,11 +56,11 @@ var auth = function(req, res, next) {
 //Login endpoint
 app.post('/login', function(req, res) {
   
-  //promise function to query userdatabase
+  //query userdatabase
   function userQuery(usr) {
     var query = new Promise(function(resolve, reject) { 
       db.collection('users').find({ username: usr }).toArray(function(err, user) { 
-
+        console.log(user);
         resolve(user); 
       });
     });
@@ -76,26 +76,39 @@ app.post('/login', function(req, res) {
     }
     if(req.body.username === value[0].username && req.body.password === value[0].password) {
       console.log('Login: ' + req.body.username);
+      console.log('Databasematch: ' + value[0].username)
       req.session.user = value[0].username;
-      req.session.admin = true;
-      res.redirect('content');
+      console.log('Sessionuser: ' + req.session.user)
+      if(req.session.user = 'sales') {
+        req.session.admin = true;
+        return res.redirect(303, '/sales');
+      }
+      if(req.session.user = 'datanom') {
+        req.session.datanom = true;
+        return res.redirect(303, '/datanom');
+      }
     } else if(req.body.username != value[0].username || req.body.password != value[0].password) {
       res.status(401).send('check username/password');
     }
-  });
+  }).catch(function(reason) { console.log(reason) });
   
 });
 
 //Logout endpoint
 app.get('/logout', function(req, res) {
   //end session
+  console.log('logged out: ' + req.session.user)
   req.session.destroy();
-  res.send('logged out');
+  res.redirect('/');
 });
 
 //Logged content
-app.get('/content', auth, function(req, res) {
+app.get('/sales', auth, function(req, res) {
   res.sendFile(path.join(__dirname + '/public/main.html'));
+});
+
+app.get('/datanom', auth, function(req, res) {
+  res.sendFile(path.join(__dirname + '/public/worker.html'));
 });
 
 //Add data to database
