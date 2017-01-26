@@ -8,6 +8,7 @@ const counterModel = require('./countermodel');
 const users = require('./users');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const path = require('path');
 
 
 app.use(bodyParser.json()); // support json encoded bodies
@@ -21,13 +22,19 @@ db.once('open', function() {
   console.log('database connected');
 });
 
-//Server listen on 3000
+//Server on :3000
 app.listen(process.env.PORT || 3000, function () {
     console.log('server up');
 });
 
 //Set public folder
-app.use(express.static('public'));
+//app.use(express.static('public'));
+app.use(express.static('public/js'));
+app.use(express.static('public/css'));
+
+app.get('/', function(req, res) {
+  res.sendFile('index.html', { root: './public/' });
+});
 
 //login
 app.use(session({
@@ -39,60 +46,56 @@ app.use(session({
 
 //Auth middleware
 var auth = function(req, res, next) {
-  if(req.session && req.session.user === checkthis && req.session.admin)
+  if(req.session.admin) {
     return next();
-  else
-    return res.sendStatus(401);
-};
-
-//Login databasemiddleware
-var creds = function(usr) {
-  var benis = db.collection('users').find({ username: usr }).toArray();
-  var user = benis.then(function(done) {
-    // console.log('var user: ' + done);
-    return done;
-  }, function(err) {
-    console.error('Async error?')
-  });
-  
-  console.log(user);
-  return Promise.resolve(user);
+  } else {
+    return res.status(401).send('please login');
+  }
 };
 
 //Login endpoint
 app.post('/login', function(req, res) {
-  function benis(usr) {
-    return db.collection('users').find({ username: usr }).toArray();
-  };
   
-  console.log('postBenis: ' + benis('admin'));
-  /*var credentials = creds(req.body.username);
-  console.log('creds; ' + credentials);*/
-  benis(req.body.username).then(function(value) {
-    var mitah = value;
-    console.log(mitah);
+  //promise function to query userdatabase
+  function userQuery(usr) {
+    var query = new Promise(function(resolve, reject) { 
+      db.collection('users').find({ username: usr }).toArray(function(err, user) { 
+
+        resolve(user); 
+      });
+    });
+    return query;
+  };
+
+  userQuery(req.body.username).then(function(value) {
+    console.log(value[0].username);
+    console.log(req.body.username + req.body.password);
     if(!req.body.username || !req.body.password) {
       res.send('Login failed');
       console.log('Empty credentials');
-    } else if(req.body.username === value || req.body.password === creds(req.body.password)) {
+    }
+    if(req.body.username === value[0].username && req.body.password === value[0].password) {
       console.log('Login: ' + req.body.username);
-      req.session.user = 'admin';
+      req.session.user = value[0].username;
       req.session.admin = true;
-      res.send('login success');
+      res.redirect('content');
+    } else if(req.body.username != value[0].username || req.body.password != value[0].password) {
+      res.status(401).send('check username/password');
     }
   });
   
 });
 
-//Logout
+//Logout endpoint
 app.get('/logout', function(req, res) {
+  //end session
   req.session.destroy();
   res.send('logged out');
 });
 
 //Logged content
 app.get('/content', auth, function(req, res) {
-  //add logged content end here
+  res.sendFile(path.join(__dirname + '/public/main.html'));
 });
 
 //Add data to database
