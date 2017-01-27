@@ -10,13 +10,15 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
 
+const devEnv = true;
+
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 //connect to database
-//mongoose.connect('mongodb://prakticum:password@ds029665.mlab.com:29665/heroku_79kjs0nb');
-mongoose.connect('mongodb://localhost/test');
+mongoose.connect('mongodb://prakticum:password@ds029665.mlab.com:29665/heroku_79kjs0nb');
+//mongoose.connect('mongodb://localhost/test');
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log('database connected');
@@ -45,8 +47,16 @@ app.use(session({
 
 
 //Auth middleware
-var auth = function(req, res, next) {
+var adminAuth = function(req, res, next) {
   if(req.session.admin) {
+    return next();
+  } else {
+    return res.status(401).send('please login');
+  }
+};
+
+var datanomAuth = function(req, res, next) {
+  if(req.session.user === 'datanom') {
     return next();
   } else {
     return res.status(401).send('please login');
@@ -79,11 +89,12 @@ app.post('/login', function(req, res) {
       console.log('Databasematch: ' + value[0].username)
       req.session.user = value[0].username;
       console.log('Sessionuser: ' + req.session.user)
-      if(req.session.user = 'sales') {
+      if(req.session.user === 'sales') {
         req.session.admin = true;
         return res.redirect(303, '/sales');
       }
-      if(req.session.user = 'datanom') {
+      if(req.session.user === 'datanom') {
+        console.log(req.session.admin)
         req.session.datanom = true;
         return res.redirect(303, '/datanom');
       }
@@ -103,11 +114,11 @@ app.get('/logout', function(req, res) {
 });
 
 //Logged content
-app.get('/sales', auth, function(req, res) {
+app.get('/sales', adminAuth, function(req, res) {
   res.sendFile(path.join(__dirname + '/public/main.html'));
 });
 
-app.get('/datanom', auth, function(req, res) {
+app.get('/datanom', datanomAuth, function(req, res) {
   res.sendFile(path.join(__dirname + '/public/worker.html'));
 });
 
@@ -125,7 +136,7 @@ app.post('/add', (req, res) => {
 
 
 //Database search
-app.get('/search', (req, res) => {
+app.get('/search', adminAuth, (req, res) => {
   console.log('Search: ' + req.query.email);
 
   db.collection('tickets').find({ email: req.query.email }).toArray(function (err, tickets) {
@@ -134,7 +145,7 @@ app.get('/search', (req, res) => {
 });
 
 //empty database
-app.get('/delete', (req, res) => {
+app.get('/delete', adminAuth, (req, res) => {
   db.collection('tickets').remove({});
     res.send('DB deleted');
     console.log('Database erased');
@@ -142,7 +153,7 @@ app.get('/delete', (req, res) => {
 
 
 //Worker search
-app.get('/workersearch', (req, res) => {
+app.get('/workersearch', datanomAuth, (req, res) => {
   var email = req.query.email;
   var id = req.query.id;
   console.log('Search: ' + email + ' ' + id);
