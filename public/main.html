@@ -3,12 +3,12 @@
 <head>
   <title>Prakticum dataservice</title>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="styles.css">
 </head>
   <body>
     <button id="delete">Erase database</button>
-    <a href="/worker.html">Datanomsidan</a>
-    <form>
+    <a href="/logout">Logout</a>
+    <form id="postform">
       <label for="fname" class="inputlabel">First name:</label>
       <input type="text" id="fname" class="input" required>
       
@@ -30,18 +30,22 @@
       <label for="id" class="inputlabel">Id:</label>
       <input type="text" id="id" class="input" readonly>
       
+      <button type="submit" id="button" class="button">Submit to database</button>
       
       
     </form>
-    <button id="button" class="button">Post button!</button>
-    <button id="button2" class="button">Search by email</button>
+    <form id="searchform">
+      <label for="emailsearch" class="inputlabel">Search by email:</label>
+      <input type="emailsearch" id="emailsearch" class="input">
     
+      <button type="submit" id="button2" class="button">Search by email</button>
+    </form>
     <div id="tablediv" class="tablediv">
       <table id="restable">
       <table>
     </div>
     
   </body>
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/scripts.js"></script>
+<script src="jquery-3.1.1.min.js"></script>
+<script src="scripts.js"></script>
 </html>

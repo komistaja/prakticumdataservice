@@ -1,13 +1,7 @@
 $(function(){
   
-  //empty database
-  $('#delete').click(function() {
-    $.get('/delete', function(data, status) {
-    });
-  });
-  
   //search
-  $('#search').click(function() {
+  $('#form').submit(function(event) {
     var email = $('#email').val();
     var id = $('#id').val();
 
@@ -22,5 +16,6 @@ $(function(){
         $('#restable').append("<tr><td>" + data[i]._id + "</td><td>" + data[i].email + "</td><td>" + data[i].service + "</td><td>" + data[i].comments + "</td></tr>");
       }
     });
+  event.preventDefault();
   });
 });

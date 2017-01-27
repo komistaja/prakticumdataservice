@@ -1,20 +1,7 @@
 $(function(){
   
-  //Login
-  $('#login').click(function(){
-    if($('#username').val() && $('#password').val()) {
-      var username = $('#username').val();
-      var password = $('#password').val();
-      $.post('/login', { username: username, password: password }, function(data, status) {
-        
-      });
-    } else {
-      console.log('passu vituiks');
-    }
-  });
-  
   //Add data to database
-  $('#button').click(function(){
+  $('#postform').submit(function(event){
     //check if required fields are empty
     if($('#fname').val() && $('#lname').val() && $('#email').val() && $('#tel').val() && $('#service').val()) {
       var fname = $('#fname').val();
@@ -37,16 +24,23 @@ $(function(){
         },
 
         function(data, status){
+          $('#fname').val('');
+          $('#lname').val('');
+          $('#email').val('');
+          $('#tel').val('');
+          $('#service').val('');
+          $('#comments').val('');
           console.log(data);
         });
       } else {
         alert('Fill forms');
       }
-    });
+   event.preventDefault(); 
+  });
   
   //Get searchdata
-  $('#button2').click(function() {
-    var email = $('#email').val();
+  $('#searchform').submit(function(event) {
+    var email = $('#emailsearch').val();
     $.get('/search',{ email: email }, function(data, status) {
       console.log(data);
       $('#fname').val(data[0].fname);
@@ -57,11 +51,12 @@ $(function(){
       $('#comments').val(data[0].comments);
       $('#id').val(data[0]._id);
     });
+    event.preventDefault();
   });
   
   //search
-  $('#button2').click(function() {
-    var email = $('#email').val();
+  /*$('#button2').click(function() {
+    var email = $('#emailsearch').val();
     var id = $('#id').val();
 
     $.get('/workersearch',{ email: email, id: id }) 
@@ -75,7 +70,7 @@ $(function(){
         $('#restable').append("<tr><td>" + data[i]._id + "</td><td>" + data[i].email + "</td><td>" + data[i].service + "</td><td>" + data[i].comments + "</td></tr>");
       }
     });
-  });
+  });*/
   
   //empty database
   $('#delete').click(function() {
