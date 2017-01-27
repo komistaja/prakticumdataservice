@@ -3,21 +3,21 @@
 <head>
   <title>Prakticum dataservice</title>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="styles.css">
 </head>
   <body>
     
-    <form>
+    <form action="/login" method="post">
       <h3 class="inputlabel">Login</h3>
       <label for="username" class="inputlabel">Username:</label>
-      <input type="text" id="username" class="input">
+      <input type="text" id="username" name="username" class="input">
       <label for="password" class="inputlabel">Password:</label>
-      <input type="password" id="password" class="input">
+      <input type="password" id="password" name="password" class="input">
+      <button type="submit" id="login" class="button">Login</button>
     </form>
-    
-    <button id="login" class="button">Login</button>
+    <p>User/Password: sales/person & datanom/datanomer</p>
     
   </body>
-<script src="js/jquery-3.1.1.min.js"></script>
-<script src="js/scripts.js"></script>
+<script src="jquery-3.1.1.min.js"></script>
+<script src="login.js"></script>
 </html>
