@@ -11,14 +11,19 @@ const session = require('express-session');
 const path = require('path');
 
 const devEnv = true;
-
+const testEnv = false;
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
 //connect to database
-mongoose.connect('mongodb://prakticum:password@ds029665.mlab.com:29665/heroku_79kjs0nb');
-//mongoose.connect('mongodb://localhost/test');
+if(testEnv) {
+  mongoose.connect('mongodb://prakticum:password@ds029665.mlab.com:29665/heroku_79kjs0nb');
+}
+if(devEnv) {
+  mongoose.connect('mongodb://localhost/test');
+}
+
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log('database connected');
@@ -33,6 +38,7 @@ app.listen(process.env.PORT || 3000, function () {
 //app.use(express.static('public'));
 app.use(express.static('public/js'));
 app.use(express.static('public/css'));
+app.use(express.static('public/img'));
 
 app.get('/', function(req, res) {
   res.sendFile('index.html', { root: './public/' });
@@ -78,8 +84,10 @@ app.post('/login', function(req, res) {
   };
 
   userQuery(req.body.username).then(function(value) {
-    console.log(value[0].username);
     console.log(req.body.username + req.body.password);
+    if(typeof value[0] === 'undefined') {
+      res.status(401).send('check username/password');
+    }
     if(!req.body.username || !req.body.password) {
       res.send('Login failed');
       console.log('Empty credentials');

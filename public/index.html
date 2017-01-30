@@ -6,16 +6,24 @@
 <link rel="stylesheet" href="styles.css">
 </head>
   <body>
+    <div class="header" id="header">
+      <div class="navbar" id="navbar">
+        <a href="http://www.prakticum.fi" id="pcum_logo">Yrkesinstitutet Prakticum</a>
+        <div id="servicelogo"></div>
+      </div>
+    </div>
     
+    <div class="container">
     <form action="/login" method="post">
       <h3 class="inputlabel">Login</h3>
       <label for="username" class="inputlabel">Username:</label>
       <input type="text" id="username" name="username" class="input" required>
       <label for="password" class="inputlabel">Password:</label>
       <input type="password" id="password" name="password" class="input" required>
-      <button type="submit" id="login" class="button">Login</button>
+      <button type="submit" id="login" class="button">LOGIN</button>
     </form>
     <p>User/Password: sales/person & datanom/datanomer</p>
+    </div>
     
   </body>
 <script src="jquery-3.1.1.min.js"></script>
