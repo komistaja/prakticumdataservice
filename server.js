@@ -11,7 +11,7 @@ const session = require('express-session');
 const path = require('path');
 
 
-const testEnv = true;
+const testEnv = false;
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -132,9 +132,22 @@ app.get('/datanom', datanomAuth, function(req, res) {
 
 //Add data to database
 app.post('/add', (req, res) => {
+  console.log(req.body);
   var data = req.body;  
   var ticket = mongoose.model('Ticket', ticketModel.ticketSchema);
   var newTicket = new ticket(data);
+  
+  var counter = new Promise(function(resolve, reject) {
+    resolve(db.collection('counters').findOneAndUpdate( 
+      { _id: 'name' },
+      { $inc: { seq: 1 } },
+      { returnNewDocument: true, upsert: true }
+    ));
+  });
+  
+  counter.then(function(value) {
+    console.log(value);
+  });
   
   newTicket.save(function (err, tiket) {
     if (err) return console.error(err);
