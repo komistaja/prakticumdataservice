@@ -43,19 +43,23 @@ $(function(){
     var email = $('#emailsearch').val();
     $.get('/search',{ email: email }, function(data, status) {
       console.log(data);
-      $('#fname').val(data[0].fname);
-      $('#lname').val(data[0].lname);
-      $('#email').val(data[0].email);
-      $('#tel').val(data[0].tel);
-      $('#service').val(data[0].service);
-      $('#comments').val(data[0].comments);
-      $('#id').val(data[0]._id);
+      if (typeof data[0] !== 'undefined') { 
+        $('#fname').val(data[0].fname);
+        $('#lname').val(data[0].lname);
+        $('#email').val(data[0].email);
+        $('#tel').val(data[0].tel);
+        $('#service').val(data[0].service);
+        $('#comments').val(data[0].comments);
+        $('#id').val(data[0]._id);
+      } else {
+        alert('No ticket found');
+      }
     });
     event.preventDefault();
   });
   
   //search
-  /*$('#button2').click(function() {
+ /* $('#button2').click(function() {
     var email = $('#emailsearch').val();
     var id = $('#id').val();
 

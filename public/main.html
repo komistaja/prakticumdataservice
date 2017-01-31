@@ -6,8 +6,22 @@
 <link rel="stylesheet" href="styles.css">
 </head>
   <body>
+    <div class="header" id="header">
+      <div class="navbar" id="navbar">
+        <div class="col3">
+          <a href="http://www.prakticum.fi" id="pcum_logo">Yrkesinstitutet Prakticum</a>
+        </div>
+        <div class="col3">
+          <div id="servicelogo"></div>
+        </div>
+        <div class="col3">
+          <a href="/logout" class="logout">Log out</a>
+        </div>
+      </div>
+    </div>
+    
     <button id="delete">Erase database</button>
-    <a href="/logout">Logout</a>
+
     <form id="postform">
       <label for="fname" class="inputlabel">First name:</label>
       <input type="text" id="fname" class="input" required>
@@ -30,7 +44,7 @@
       <label for="id" class="inputlabel">Id:</label>
       <input type="text" id="id" class="input" readonly>
       
-      <button type="submit" id="button" class="button">Submit to database</button>
+      <button type="submit" id="button" class="button">ADD TICKET</button>
       
       
     </form>
@@ -38,7 +52,7 @@
       <label for="emailsearch" class="inputlabel">Search by email:</label>
       <input type="emailsearch" id="emailsearch" class="input">
     
-      <button type="submit" id="button2" class="button">Search by email</button>
+      <button type="submit" id="button2" class="button">SEARCH</button>
     </form>
     <div id="tablediv" class="tablediv">
       <table id="restable">

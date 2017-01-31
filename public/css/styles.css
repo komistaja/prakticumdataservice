@@ -60,7 +60,6 @@ th  {
 }
 
 .header {
-  width: 100%;
   background-color: #ff9933;
   padding: 10px;
   box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.25);
@@ -68,17 +67,16 @@ th  {
 
 .navbar {
   padding: 0px 130px 0px 130px;
+  text-align: center;
 }
 
-#pcum_logo {
-  float: left; 
-  background-image: url("prakticum_logo_white.svg");
-  display: block;
-  width: 179px;
-  height: 50px;
-  background-size: 100% 100%;
-  color: transparent;
+.col3 {
+  width: 32.6%;
+  display: inline-block;
+  text-align: center;
 }
+
+
 
 .button {
   background-color: #ff9933;
@@ -96,11 +94,47 @@ th  {
   background-color: #f57a00;
 }
 
-#servicelogo {
+#pcum_logo {
+  float: left; 
+  background-image: url("prakticum_logo_white.svg");
   display: block;
+  width: 50%;
+  height: 50px;
+  background-size: 100% 100%;
+  color: transparent;
+  min-width: 140px;
+}
+
+#servicelogo {
+  display: inline-block;
   background-image: url("dataservice.svg");
   height: 45px;
-  width: 300px;
+  width: 50%;
   background-size: 100% 100%;
   margin: auto;
+  min-width: 140px;
+}
+
+.logout {
+  display: block;
+  float: right;
+  color: #fff;
+}
+
+/* mediaquery for <480px width */
+@media screen and (max-width: 750px) {
+  #pcum_logo {
+    display: none;
+  }
+  
+  #navbar {
+    text-align: left;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+   #navbar {
+    padding: 0px 0px 0px 0px;
+  }
+}
 }
