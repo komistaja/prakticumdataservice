@@ -10,8 +10,8 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
 
-const devEnv = true;
-const testEnv = false;
+
+const testEnv = true;
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 if(testEnv) {
   mongoose.connect('mongodb://prakticum:password@ds029665.mlab.com:29665/heroku_79kjs0nb');
 }
-if(devEnv) {
+if(!testEnv) {
   mongoose.connect('mongodb://localhost/test');
 }
 
