@@ -50,7 +50,7 @@ $(function(){
         $('#tel').val(data[0].tel);
         $('#service').val(data[0].service);
         $('#comments').val(data[0].comments);
-        $('#id').val(data[0]._id);
+        $('#id').val(data[0].id);
       } else {
         alert('No ticket found');
       }
