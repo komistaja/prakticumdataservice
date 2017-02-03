@@ -121,6 +121,11 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
+//Loginpage
+app.get('/loginpage', function(req, res) {
+  res.sendFile(path.join(__dirname + '/public/login.html'));
+});
+
 //Logged content
 app.get('/sales', adminAuth, function(req, res) {
   res.sendFile(path.join(__dirname + '/public/main.html'));
@@ -132,13 +137,26 @@ app.get('/datanom', datanomAuth, function(req, res) {
 
 //Add data to database
 app.post('/add', (req, res) => {
-  var data = req.body;  
+  console.log(req.body);
   var ticket = mongoose.model('Ticket', ticketModel.ticketSchema);
-  var newTicket = new ticket(data);
-  
-  newTicket.save(function (err, tiket) {
-    if (err) return console.error(err);
+  var counter = new Promise(function(resolve, reject) {
+    resolve(db.collection('counters').findOneAndUpdate( 
+      { _id: 'name' },
+      { $inc: { seq: 1 } },
+      { returnNewDocument: true, upsert: true }
+    ));
+    return value.seq;
   });
+  
+  counter.then(function(value) {
+    req.body.id = value.value.seq;
+    var data = req.body;
+    var addTicket = new ticket(data);
+    addTicket.save(function(err, tiket) {
+      if (err) return console.error(err);
+    });
+  });
+  
   res.send(req.body);
 });
 
@@ -164,12 +182,13 @@ app.get('/delete', adminAuth, (req, res) => {
 app.get('/workersearch', datanomAuth, (req, res) => {
   var email = req.query.email;
   var id = req.query.id;
+  
   console.log('Search: ' + email + ' ' + id);
 
-  db.collection('tickets').find({ $or: [ { email: req.query.email }, { _id: req.query.id } ] }).toArray(function (err, tickets) { 
+  db.collection('tickets').find({ $or: [ { email: email }, { id: id } ] }).toArray(function (err, tickets) { 
     var restickets = [];
     for(i = 0; i < tickets.length; i++) {
-      restickets[i] = { _id:tickets[i]._id, email:tickets[i].email, service:tickets[i].service, comments: tickets[i].comments};
+      restickets[i] = { id:tickets[i].id, email:tickets[i].email, service:tickets[i].service, comments: tickets[i].comments};
     }
     res.send(restickets);
   });

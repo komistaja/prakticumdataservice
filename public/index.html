@@ -3,30 +3,52 @@
 <head>
   <title>Prakticum dataservice</title>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="main.css">
 </head>
   <body>
     <div class="header" id="header">
       <div class="navbar" id="navbar">
         <div class="col3"><a href="http://www.prakticum.fi" id="pcum_logo">Yrkesinstitutet Prakticum</a></div>
         <div class="col3"><div id="servicelogo"></div></div>
-        <div class="col3"></div>
+        <div class="col3"><a href="/loginpage" class="logout">Log in</a></div>
       </div>
     </div>
     
     <div class="container">
-    <form action="/login" method="post">
-      <h3 class="inputlabel">Login</h3>
-      <label for="username" class="inputlabel">Username:</label>
-      <input type="text" id="username" name="username" class="input" required>
-      <label for="password" class="inputlabel">Password:</label>
-      <input type="password" id="password" name="password" class="input" required>
-      <button type="submit" id="login" class="button">LOGIN</button>
-    </form>
-    <p>User/Password: sales/person & datanom/datanomer</p>
+      <div class="main">
+        <div class="headingwrapper"><h1>Dataservice Prakticum Helsinki</h1></div>
+        <div class="col2 listcol">
+          <div class="list"><div class="thumb"></div>Virus-/trojanbekämpning</div>
+          <div class="list"><div class="thumb"></div>Överföring av data</div>
+          <div class="list"><div class="thumb"></div>OS installation</div>
+          <div class="list"><div class="thumb"></div>Mjukvaruinstallation</div>
+          <div class="list"><div class="thumb"></div>Nätverksreparation</div>
+        </div>
+        <div class="col2 listcol">
+          <div class="list"><div class="thumb"></div>Data-/systemåterställning</div>
+          <div class="list"><div class="thumb"></div>Hårdvaruinstallation</div>
+          <div class="list"><div class="thumb"></div>PC-kloning/sökerhetskopiering</div>
+          <div class="list"><div class="thumb"></div>Mobila problem</div>
+          <div class="list"><div class="thumb"></div>Webpublicering</div>
+        </div>
+        
+      </div>
+      <div class="footer main">
+        <div class="footerwrapper">
+          <div class="col2">
+            <div><a href="mailto:dataservice.hki@gmail.com" class="link">SKICKA E-POST!</a></div>
+          </div>
+          <div class="col2">
+            <div><a href="tel:+358405898450" class="link">GSM +358405898450</a></div>
+          </div>
+          <div>
+          <p>Jan Magnus Janssnons Plats 5, 00500 Helsingfors</p>
+          <div><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1982.7634474205581!2d24.964549216445295!3d60.20119758197229!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x4692099e1649a89b%3A0x7f04b0079dc3957d!2sJan-Magnus+Janssonin+aukio+5%2C+00550+Helsinki!5e0!3m2!1sfi!2sfi!4v1486105514060" width="100%" height="300" frameborder="0" style="border:0" allowfullscreen></iframe></div>
+        </div>
+        </div>
+      </div>
     </div>
-    
-  </body>
-<script src="jquery-3.1.1.min.js"></script>
-<script src="login.js"></script>
+    </body>
+<!--<script src="jquery-3.1.1.min.js"></script>
+<script src="login.js"></script>-->
 </html>

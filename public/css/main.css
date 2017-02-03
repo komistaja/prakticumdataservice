@@ -1,0 +1,169 @@
+body {
+  margin: 0;
+  color: #666666;
+  font-family: "Arial";
+  background-color: #f5f5f5;
+}
+
+.header {
+  background-color: #ff9933;
+  padding: 10px;
+  box-shadow: 0px 4px 5px 0px rgba(0,0,0,0.25);
+}
+
+.navbar {
+  padding: 0px 130px 0px 130px;
+  text-align: center;
+}
+
+.logout {
+  display: block;
+  float: right;
+  color: #fff;
+}
+
+.headingwrapper {
+  text-align: center;
+}
+
+.col3 {
+  width: 32.6%;
+  display: inline-block;
+  text-align: center;
+}
+
+.col2 {
+  width: 34.6%;
+  margin: 0 7.5% 0 7.5%;
+  display: inline-block;
+  text-align: center;
+}
+
+#pcum_logo {
+  float: left; 
+  background-image: url("prakticum_logo_white.svg");
+  display: block;
+  width: 50%;
+  height: 50px;
+  background-size: 100% 100%;
+  color: transparent;
+  min-width: 140px;
+}
+
+#servicelogo {
+  display: inline-block;
+  background-image: url("dataservice.svg");
+  height: 45px;
+  width: 50%;
+  background-size: 100% 100%;
+  margin: auto;
+  min-width: 140px;
+}
+
+.logout {
+  display: block;
+  float: right;
+  color: #fff;
+}
+
+.main {
+  background-color: #fff;
+  max-width: 1000px;
+  margin: 50px auto 0px auto;
+  padding: 2% 2% 0 2%;
+}
+
+.footer {
+  background-color: #fff;
+  max-width: 1000px;
+  margin: 0px auto 20px auto;
+  padding: 0 2% 0 2%;
+}
+
+.container {
+  padding: 0 2% 0 2%;
+  display: block;
+}
+
+.list {
+  display: flex;
+  height: 25px;
+  margin: 1em 0em 0em 0em;
+  text-align: left;
+}
+
+.listcol {
+
+}
+
+.thumb {
+  background-image: url(thumbs-up-xxl.png);
+  background-size: contain;
+  height: 20px;
+  width: 20px;
+  display: inline-block;
+  float: left;
+  margin: 0 1em 0 0;
+}
+
+.footerwrapper {
+  padding: 2% 0 2% 0;
+  display: block;
+}
+
+.link {
+  padding: 1em 0 1em 0;
+  background-color: #ff9933;
+  width: 240px;
+  border-width: 0px;
+  text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  font-family: 'Source Sans Pro',sans-serif;
+  margin: 10px auto 10px auto;
+  display: block;
+  text-decoration: none;
+}
+
+.link:hover {
+  background-color: #f57a00;
+}
+
+/* mediaquery for <750px width */
+@media screen and (max-width: 750px) {
+  #pcum_logo {
+    display: none;
+  }
+  
+  #navbar {
+    text-align: left;
+  }
+  .col3 {
+    width: 100%;
+  }
+  
+  .col2 {
+    width: 85%;
+  }
+  
+  .list {
+    margin: 0 auto 0.5em auto;
+    width: 70%;
+    display: block;
+    text-align: center;
+  }
+  .main {
+    background-color: #f5f5f5;
+  }
+  
+  .thumb {
+    float: inherit;
+  }
+}
+
+@media screen and (max-width: 1080px) {
+   #navbar {
+    padding: 0px 0px 0px 0px;
+  }
+}
