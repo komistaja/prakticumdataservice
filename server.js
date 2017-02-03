@@ -11,7 +11,7 @@ const session = require('express-session');
 const path = require('path');
 
 
-const testEnv = false;
+const testEnv = true;
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -119,6 +119,11 @@ app.get('/logout', function(req, res) {
   console.log('logged out: ' + req.session.user)
   req.session.destroy();
   res.redirect('/');
+});
+
+//Loginpage
+app.get('/loginpage', function(req, res) {
+  res.sendFile(path.join(__dirname + '/public/login.html'));
 });
 
 //Logged content

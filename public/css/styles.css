@@ -50,11 +50,6 @@ th  {
   background-color: lightgray;
 }
 
-.button {
-  margin: 10px auto 10px auto;
-  display: block;
-}
-
 .tablediv {
   margin: 20px 10% 20px 10%;
 }
@@ -88,6 +83,8 @@ th  {
   color: #fff;
   cursor: pointer;
   font-family: 'Source Sans Pro',sans-serif;
+  margin: 10px auto 10px auto;
+  display: block;
 }
 
 .button:hover {
