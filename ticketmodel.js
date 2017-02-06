@@ -8,5 +8,6 @@ exports.ticketSchema = mongoose.Schema({
     tel: Number,
     date: { type: Date, default: Date.now },
     service: String,
-    comments: String
+    comments: String,
+    status: String
   });

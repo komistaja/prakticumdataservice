@@ -11,7 +11,7 @@ const session = require('express-session');
 const path = require('path');
 
 
-const testEnv = true;
+const testEnv = false;
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
