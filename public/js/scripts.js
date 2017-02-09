@@ -11,6 +11,7 @@ $(function(){
       var date = new Date();
       var service = $('#service').val();
       var comments = $('#comments').val();
+      var status = $('#status').val();
       
       //post data to server/database
       $.post('/add', {
@@ -20,7 +21,8 @@ $(function(){
           tel: tel,
           date: date,
           service: service,
-          comments: comments
+          comments: comments,
+          status: status
         },
 
         function(data, status){
@@ -50,6 +52,7 @@ $(function(){
         $('#tel').val(data[0].tel);
         $('#service').val(data[0].service);
         $('#comments').val(data[0].comments);
+        $('#status').val(data[0].status);
         $('#id').val(data[0].id);
       } else {
         alert('No ticket found');

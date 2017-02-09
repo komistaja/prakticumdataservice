@@ -188,8 +188,22 @@ app.get('/workersearch', datanomAuth, (req, res) => {
   db.collection('tickets').find({ $or: [ { email: email }, { id: id } ] }).toArray(function (err, tickets) { 
     var restickets = [];
     for(i = 0; i < tickets.length; i++) {
-      restickets[i] = { id:tickets[i].id, email:tickets[i].email, service:tickets[i].service, comments: tickets[i].comments};
+      restickets[i] = { id:tickets[i].id, email:tickets[i].email, service:tickets[i].service, comments: tickets[i].comments, status: tickets[i].status };
     }
     res.send(restickets);
   });
+});
+
+//worker update
+app.post('/workerupdt', datanomAuth, (req,res) => {
+  var data = req.body;
+  console.log(req.body);
+  
+  db.collection('tickets').findOneAndUpdate(
+      { id: req.body.id },
+      { comment: req.body.comment },
+      { status: req.body.status },
+      { returnNewDocument: true, upsert: true }
+    ).catch(function(reason) { console.log(reason) });
+  res.send('Report');
 });
