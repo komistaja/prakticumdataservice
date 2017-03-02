@@ -20,8 +20,21 @@
       </div>
     </div>
     
-    <button id="delete">Erase database</button>
-
+    <div class="maincol"> 
+    <form id="searchform">
+      <label for="emailsearch" class="inputlabel">Email:</label>
+      <input type="emailsearch" id="emailsearch" class="input">
+      <label for="id" class="inputlabel">Id:</label>
+      <input type="number" id="idsearch" class="input">
+    
+      <button type="submit" id="button2" class="button">SEARCH</button>
+    </form>
+    <div id="tablediv" class="tablediv">
+    
+    </div>
+    </div>
+      
+    <div class="maincol">
     <form id="postform">
       <label for="fname" class="inputlabel">First name:</label>
       <input type="text" id="fname" class="input" required>
@@ -52,18 +65,9 @@
       <input type="text" id="id" class="input" readonly>
       
       <button type="submit" id="button" class="button">ADD TICKET</button>
-      
-      
+      <button id="delete" class="button">Erase database</button>
+
     </form>
-    <form id="searchform">
-      <label for="emailsearch" class="inputlabel">Search by email:</label>
-      <input type="emailsearch" id="emailsearch" class="input">
-    
-      <button type="submit" id="button2" class="button">SEARCH</button>
-    </form>
-    <div id="tablediv" class="tablediv">
-      <table id="restable">
-      <table>
     </div>
     
   </body>

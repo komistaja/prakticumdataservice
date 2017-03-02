@@ -136,9 +136,9 @@ app.post('/add', (req, res) => {
 
 //Database search
 app.get('/search', auth.adminAuth, (req, res) => {
-  console.log('Search: ' + req.query.email);
+  console.log('Search: email: ' + req.query.email + ', id: ' + req.query.id);
 
-  db.collection('tickets').find({ email: req.query.email }).toArray(function (err, tickets) {
+  db.collection('tickets').find({ $or: [ { email: req.query.email }, { id: req.query.id } ] }).toArray(function (err, tickets) {
     res.send(tickets);
   });
 });
@@ -179,4 +179,19 @@ app.post('/workerupdt', auth.datanomAuth, (req,res) => {
       { returnNewDocument: true, upsert: true }
     ).catch(function(reason) { console.log(reason) });
   res.send('Report');
+});
+
+// update
+app.post('/update', auth.adminAuth, (req, res) => {
+  db.collection('tickets').findOneAndUpdate(
+    { id: req.query.id },
+    { fname: req.query.fname },
+    { lname: req.query.lname },
+    { email: req.query.email },
+    { tel: req.query.tel },
+    { service: req.query.service },
+    { comments: req.query.comments },
+    { status: req.query.status },
+    { returnNewDocument: true, uspert: true }
+  ).catch(function(reason) { console.log(reason) });
 });

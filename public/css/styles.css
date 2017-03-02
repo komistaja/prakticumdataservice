@@ -137,6 +137,13 @@ th  {
   color: #fff;
 }
 
+.maincol {
+  display: inline-block;
+  width: 49%;
+  vertical-align: top;
+  padding: 20px 0px 0px 0px;  
+}
+
 /* mediaquery for <480px width */
 @media screen and (max-width: 750px) {
   #pcum_logo {
