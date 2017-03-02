@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 exports.ticketSchema = mongoose.Schema({
-    id: String,
+    id: { type: String, index: true, unique: true },
     fname: String,
     lname: String,
     email: String,

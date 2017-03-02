@@ -183,15 +183,18 @@ app.post('/workerupdt', auth.datanomAuth, (req,res) => {
 
 // update
 app.post('/update', auth.adminAuth, (req, res) => {
-  db.collection('tickets').findOneAndUpdate(
-    { id: req.query.id },
-    { fname: req.query.fname },
-    { lname: req.query.lname },
-    { email: req.query.email },
-    { tel: req.query.tel },
-    { service: req.query.service },
-    { comments: req.query.comments },
-    { status: req.query.status },
-    { returnNewDocument: true, uspert: true }
-  ).catch(function(reason) { console.log(reason) });
+  console.log(req.body.id)
+  db.collection('tickets').update(
+    { id: req.body.id },
+    { $set: 
+      { fname: req.body.fname,
+       lname: req.body.lname,
+       email: req.body.email,
+       tel: req.body.tel,
+       service: req.body.service,
+       comments: req.body.comments,
+       status: req.body.status }
+      }
+  ).catch(function(reason) { res.send(reason) });
+  res.send('thx obama');
 });

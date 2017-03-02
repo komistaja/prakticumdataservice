@@ -12,9 +12,10 @@ $(function(){
       var service = $('#service').val();
       var comments = $('#comments').val();
       var status = $('#status').val();
+      var id = $('#id').val();
       
       //post data to server/database
-      $.post('/add', {
+      $.post('/update', {
           fname: fname,
           lname: lname,
           email: email,
@@ -22,7 +23,8 @@ $(function(){
           date: date,
           service: service,
           comments: comments,
-          status: status
+          status: status,
+          id: id
         },
 
         function(data, status){
@@ -32,6 +34,7 @@ $(function(){
           $('#tel').val('');
           $('#service').val('');
           $('#comments').val('');
+          $('#id').val('');
           console.log(data);
         });
       } else {
@@ -43,7 +46,8 @@ $(function(){
   //Get searchdata
   $('#searchform').submit(function(event) {
     var email = $('#emailsearch').val();
-    $.get('/search',{ email: email }, function(data, status) {
+    var id = $('#idsearch').val();
+    $.get('/search',{ email: email, id: id }, function(data, status) {
       console.log(data);
       if (typeof data[0] !== 'undefined') { 
         $('#fname').val(data[0].fname);
