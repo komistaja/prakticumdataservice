@@ -52,18 +52,8 @@ $(function(){
   $('#searchform').submit(function(event) {
     var email = $('#emailsearch').val();
     var id = $('#idsearch').val();
-    $.get('/search',{ email: email, id: id }, function(data, status) {
-      console.log(data);
+    $.get('/admin',{ email: email, id: id }, function(data, status) {
       if (typeof data[0] !== 'undefined') { 
-        /*$('#fname').val(data[0].fname);
-        $('#lname').val(data[0].lname);
-        $('#email').val(data[0].email);
-        $('#tel').val(data[0].tel);
-        $('#service').val(data[0].service);
-        $('#comments').val(data[0].comments);
-        $('#status').val(data[0].status);
-        $('#id').val(data[0].id);*/
-        
         $('#tablediv').empty();
         $('#tablediv').append('<table id="restable"><tr><th>Id</th><th>Email</th><th>Service</th><th>Comments</th><th>Status</th></tr></table>');
         
@@ -86,11 +76,9 @@ $(function(){
         $('.restr').dblclick(function() {
           console.log(this.firstChild.innerHTML);
           var searchid = this.firstChild.innerHTML;
-          $.get('/search',{ id: searchid }, function(data, status) {
+          $.get('/admin',{ id: searchid }, function(data, status) {
             console.log(data);
             if (typeof data[0] !== 'undefined') { 
-              //$('#button').text('Update ticket');
-              //$('#postform').attr('id', 'updateform');
                             
               $('#fname').val(data[0].fname);
               $('#lname').val(data[0].lname);
@@ -101,21 +89,45 @@ $(function(){
               $('#status').val(data[0].status);
               $('#id').val(data[0].id);
               
-            } else { alert('No ticket found'); }
+            } else {
+              $('#restable').append('No ticket found');
+            }
     });
         });
         
       } else {
-        alert('No ticket found');
+        $('#tablediv').empty();
+        $('#tablediv').append('No ticket found');
       }
     });
     event.preventDefault();
   });
   
   //empty database
-  $('#delete').click(function() {
+  /*$('#delete').click(function() {
     $.get('/delete', function(data, status) {
     });
+  });*/
+  
+  // delete entry
+  $('#delete').click(function() {
+    if($('#id').val() !== '') {
+      if(confirm('Delete ticket?')) {
+        $.ajax({ url: '/admin', type: 'DELETE', data: { id: $('#id').val() }, success: function(result) {
+            if(result.ok === 1) {
+              alert(result.n + ' ticket/s removed');
+            }
+          }
+        });
+      }
+      $('#fname').val('');
+      $('#lname').val('');
+      $('#email').val('');
+      $('#tel').val('');
+      $('#service').val('');
+      $('#comments').val('');
+      $('#id').val('');
+    }
   });
   
   

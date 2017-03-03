@@ -135,7 +135,7 @@ app.post('/add', (req, res) => {
 
 
 //Database search
-app.get('/search', auth.adminAuth, (req, res) => {
+app.get('/admin', auth.adminAuth, (req, res) => {
   console.log('Search: email: ' + req.query.email + ', id: ' + req.query.id);
 
   db.collection('tickets').find({ $or: [ { email: req.query.email }, { id: req.query.id } ] }).toArray(function (err, tickets) {
@@ -197,4 +197,12 @@ app.post('/update', auth.adminAuth, (req, res) => {
       }
   ).catch(function(reason) { res.send(reason) });
   res.send('thx obama');
+});
+
+//delete document
+app.delete('/admin', auth.adminAuth, (req, res) => {
+  var ticketRemove = db.collection('tickets').remove({ id: req.body.id }, 1);
+  ticketRemove.then(function(value) {
+    res.send(value);
+  })
 });
