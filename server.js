@@ -2,16 +2,19 @@ const express = require('express');
 const app = express();
 const mongoose = require('mongoose');
 const db = mongoose.connection;
-const ticketModel = require('./ticketmodel');
-const userModel = require('./usermodel');
-const counterModel = require('./countermodel');
-const users = require('./users');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const path = require('path');
 
+const ticketModel = require('./models/ticketmodel');
+const userModel = require('./models/usermodel');
+const counterModel = require('./models/countermodel');
 
-const testEnv = true;
+const auth = require('./auth');
+const query = require('./query');
+
+
+const testEnv = false;
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
@@ -23,19 +26,17 @@ if(testEnv) {
 if(!testEnv) {
   mongoose.connect('mongodb://localhost/test');
 }
-
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
   console.log('database connected');
 });
 
-//Server on :3000
+//Server listen
 app.listen(process.env.PORT || 3000, function () {
     console.log('server up');
 });
 
 //Set public folder
-//app.use(express.static('public'));
 app.use(express.static('public/js'));
 app.use(express.static('public/css'));
 app.use(express.static('public/img'));
@@ -51,39 +52,10 @@ app.use(session({
   saveUninitialized: true
 }));
 
-
-//Auth middleware
-var adminAuth = function(req, res, next) {
-  if(req.session.admin) {
-    return next();
-  } else {
-    return res.status(401).send('please login');
-  }
-};
-
-var datanomAuth = function(req, res, next) {
-  if(req.session.user === 'datanom') {
-    return next();
-  } else {
-    return res.status(401).send('please login');
-  }
-};
-
 //Login endpoint
 app.post('/login', function(req, res) {
-  
-  //query userdatabase
-  function userQuery(usr) {
-    var query = new Promise(function(resolve, reject) { 
-      db.collection('users').find({ username: usr }).toArray(function(err, user) { 
-        console.log(user);
-        resolve(user); 
-      });
-    });
-    return query;
-  };
-
-  userQuery(req.body.username).then(function(value) {
+ 
+  query.userQuery(req.body.username).then(function(value) {
     console.log(req.body.username + req.body.password);
     if(typeof value[0] === 'undefined') {
       res.status(401).send('check username/password');
@@ -126,12 +98,13 @@ app.get('/loginpage', function(req, res) {
   res.sendFile(path.join(__dirname + '/public/login.html'));
 });
 
-//Logged content
-app.get('/sales', adminAuth, function(req, res) {
+//Admin endpoint
+app.get('/sales', auth.adminAuth, function(req, res) {
   res.sendFile(path.join(__dirname + '/public/main.html'));
 });
 
-app.get('/datanom', datanomAuth, function(req, res) {
+//Datanom endpoint
+app.get('/datanom', auth.datanomAuth, function(req, res) {
   res.sendFile(path.join(__dirname + '/public/worker.html'));
 });
 
@@ -162,16 +135,16 @@ app.post('/add', (req, res) => {
 
 
 //Database search
-app.get('/search', adminAuth, (req, res) => {
-  console.log('Search: ' + req.query.email);
+app.get('/search', auth.adminAuth, (req, res) => {
+  console.log('Search: email: ' + req.query.email + ', id: ' + req.query.id);
 
-  db.collection('tickets').find({ email: req.query.email }).toArray(function (err, tickets) {
+  db.collection('tickets').find({ $or: [ { email: req.query.email }, { id: req.query.id } ] }).toArray(function (err, tickets) {
     res.send(tickets);
   });
 });
 
 //empty database
-app.get('/delete', adminAuth, (req, res) => {
+app.get('/delete', auth.adminAuth, (req, res) => {
   db.collection('tickets').remove({});
     res.send('DB deleted');
     console.log('Database erased');
@@ -179,7 +152,7 @@ app.get('/delete', adminAuth, (req, res) => {
 
 
 //Worker search
-app.get('/workersearch', datanomAuth, (req, res) => {
+app.get('/workersearch', auth.datanomAuth, (req, res) => {
   var email = req.query.email;
   var id = req.query.id;
   
@@ -188,8 +161,40 @@ app.get('/workersearch', datanomAuth, (req, res) => {
   db.collection('tickets').find({ $or: [ { email: email }, { id: id } ] }).toArray(function (err, tickets) { 
     var restickets = [];
     for(i = 0; i < tickets.length; i++) {
-      restickets[i] = { id:tickets[i].id, email:tickets[i].email, service:tickets[i].service, comments: tickets[i].comments};
+      restickets[i] = { id:tickets[i].id, email:tickets[i].email, service:tickets[i].service, comments: tickets[i].comments, status: tickets[i].status };
     }
     res.send(restickets);
   });
+});
+
+//worker update
+app.post('/workerupdt', auth.datanomAuth, (req,res) => {
+  var data = req.body;
+  console.log(req.body);
+  
+  db.collection('tickets').findOneAndUpdate(
+      { id: req.body.id },
+      { comment: req.body.comment },
+      { status: req.body.status },
+      { returnNewDocument: true, upsert: true }
+    ).catch(function(reason) { console.log(reason) });
+  res.send('Report');
+});
+
+// update
+app.post('/update', auth.adminAuth, (req, res) => {
+  console.log(req.body.id)
+  db.collection('tickets').update(
+    { id: req.body.id },
+    { $set: 
+      { fname: req.body.fname,
+       lname: req.body.lname,
+       email: req.body.email,
+       tel: req.body.tel,
+       service: req.body.service,
+       comments: req.body.comments,
+       status: req.body.status }
+      }
+  ).catch(function(reason) { res.send(reason) });
+  res.send('thx obama');
 });

@@ -32,8 +32,12 @@ form {
 
 }
 
+td, th {
+    border: 1px solid darkgray;
+}
+
 table, th, td {
-  border: 1px solid darkgray;
+
   border-collapse: collapse;
   margin: 20px auto 20px auto;
 }
@@ -52,6 +56,10 @@ th  {
 
 .tablediv {
   margin: 20px 10% 20px 10%;
+}
+
+.tdbtn {
+  padding: 0 0 0 0;
 }
 
 .header {
@@ -87,6 +95,17 @@ th  {
   display: block;
 }
 
+.editbtn {
+  margin: 0 0 0 0;
+  background-color: lightgray;
+  text-shadow: 0px 0px 0px rgba(0,0,0,0.7);
+  font-size: 1rem;
+  color: #666666;
+  cursor: pointer;
+  font-family: 'Source Sans Pro',sans-serif;
+  display: block;
+}
+
 .button:hover {
   background-color: #f57a00;
 }
@@ -116,6 +135,13 @@ th  {
   display: block;
   float: right;
   color: #fff;
+}
+
+.maincol {
+  display: inline-block;
+  width: 49%;
+  vertical-align: top;
+  padding: 20px 0px 0px 0px;  
 }
 
 /* mediaquery for <480px width */
