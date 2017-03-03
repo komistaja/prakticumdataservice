@@ -1,5 +1,4 @@
 $(function(){
-  
   //Add data to database
   $('#postform').submit(function(event){
     //check if required fields are empty
@@ -14,8 +13,14 @@ $(function(){
       var status = $('#status').val();
       var id = $('#id').val();
       
+      if($('#id').val() === '') {
+        var hole = '/add';
+      } else {
+        var hole = '/update'
+      }
+            
       //post data to server/database
-      $.post('/update', {
+      $.post(hole, {
           fname: fname,
           lname: lname,
           email: email,
@@ -50,14 +55,14 @@ $(function(){
     $.get('/search',{ email: email, id: id }, function(data, status) {
       console.log(data);
       if (typeof data[0] !== 'undefined') { 
-        $('#fname').val(data[0].fname);
+        /*$('#fname').val(data[0].fname);
         $('#lname').val(data[0].lname);
         $('#email').val(data[0].email);
         $('#tel').val(data[0].tel);
         $('#service').val(data[0].service);
         $('#comments').val(data[0].comments);
         $('#status').val(data[0].status);
-        $('#id').val(data[0].id);
+        $('#id').val(data[0].id);*/
         
         $('#tablediv').empty();
         $('#tablediv').append('<table id="restable"><tr><th>Id</th><th>Email</th><th>Service</th><th>Comments</th><th>Status</th></tr></table>');
@@ -84,6 +89,9 @@ $(function(){
           $.get('/search',{ id: searchid }, function(data, status) {
             console.log(data);
             if (typeof data[0] !== 'undefined') { 
+              //$('#button').text('Update ticket');
+              //$('#postform').attr('id', 'updateform');
+                            
               $('#fname').val(data[0].fname);
               $('#lname').val(data[0].lname);
               $('#email').val(data[0].email);
@@ -92,10 +100,8 @@ $(function(){
               $('#comments').val(data[0].comments);
               $('#status').val(data[0].status);
               $('#id').val(data[0].id);
-           
-            } else {
-              alert('No ticket found');
-            }
+              
+            } else { alert('No ticket found'); }
     });
         });
         
