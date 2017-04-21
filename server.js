@@ -14,7 +14,7 @@ const auth = require('./auth');
 const query = require('./query');
 
 
-const testEnv = false;
+const testEnv = true;
 
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
