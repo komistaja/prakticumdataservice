@@ -55,7 +55,7 @@ $(function(){
     $.get('/admin',{ email: email, id: id }, function(data, status) {
       if (typeof data[0] !== 'undefined') { 
         $('#tablediv').empty();
-        $('#tablediv').append('<table id="restable"><tr><th>Id</th><th>Email</th><th>Service</th><th>Comments</th><th>Status</th></tr></table>');
+        $('#tablediv').append('<div>Doubleclick to edit</div><table id="restable"><tr><th>Id</th><th>Email</th><th>Service</th><th>Comments</th><th>Status</th></tr></table>');
         
         for(i = 0; i < data.length; i++) {
           if(data[i].status == "0") {
